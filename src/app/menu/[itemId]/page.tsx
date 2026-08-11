@@ -76,6 +76,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
                   modelUrl={item.model} 
                   iosModelUrl={item.iosModelUrl} 
                   productName={item.name} 
+                  arConfig={item.ar}
                 />
               )}
             </div>

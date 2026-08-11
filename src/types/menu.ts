@@ -17,9 +17,13 @@ export interface MenuItem {
   model?: string; // URL to the GLB model
   iosModelUrl?: string; // URL to the USDZ model for iOS AR
   modelScale?: number;
-  arScale?: number; // Physical scale adjustment for AR
   modelRotation?: [number, number, number];
   modelPosition?: [number, number, number];
+  ar?: {
+    scale?: number;
+    orientation?: string; // e.g. "0deg 90deg 0deg"
+    placement?: "floor" | "wall";
+  };
   ingredients: string[];
   tags: string[];
   isVegetarian: boolean;

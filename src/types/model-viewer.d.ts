@@ -10,6 +10,10 @@ declare global {
           ar?: boolean;
           "ar-modes"?: string;
           "ar-scale"?: string;
+          scale?: string;
+          orientation?: string;
+          "ar-placement"?: string;
+          "shadow-intensity"?: string;
           "camera-controls"?: boolean;
           "disable-zoom"?: boolean;
           "auto-rotate"?: boolean;

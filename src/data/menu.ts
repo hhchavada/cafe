@@ -13,6 +13,10 @@ export const menuItems: MenuItem[] = [
     image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&q=80&w=800",
     model: "/models/burger.glb",
     iosModelUrl: "/models/burger.usdz",
+    ar: {
+      scale: 1, // Assume 1 is correct scale if model is 1:1, else adjust later
+      placement: "floor"
+    },
     ingredients: ["Beef Patty", "Cheddar Cheese", "Lettuce", "Tomato", "House Sauce", "Brioche Bun"],
     tags: ["Signature", "Hearty"],
     isVegetarian: false,
@@ -64,6 +68,11 @@ export const menuItems: MenuItem[] = [
     shortDescription: "Classic tomato, mozzarella, and basil.",
     image: "https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?auto=format&fit=crop&q=80&w=800",
     model: "/models/pizza.glb",
+    iosModelUrl: "/models/pizza.usdz",
+    ar: {
+      scale: 1,
+      placement: "floor"
+    },
     ingredients: ["Pizza Dough", "San Marzano Tomatoes", "Fresh Mozzarella", "Basil", "Olive Oil"],
     tags: ["Classic"],
     isVegetarian: true,
@@ -81,6 +90,11 @@ export const menuItems: MenuItem[] = [
     shortDescription: "Artisanal pepperoni with hot honey.",
     image: "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&q=80&w=800",
     model: "/models/pizza.glb",
+    iosModelUrl: "/models/pizza.usdz",
+    ar: {
+      scale: 1,
+      placement: "floor"
+    },
     ingredients: ["Pizza Dough", "Tomato Sauce", "Mozzarella", "Spicy Pepperoni", "Hot Honey"],
     tags: ["Spicy", "Meat Lover"],
     isVegetarian: false,
@@ -98,6 +112,11 @@ export const menuItems: MenuItem[] = [
     shortDescription: "Ricotta, mushrooms, and truffle oil.",
     image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800",
     model: "/models/pizza.glb",
+    iosModelUrl: "/models/pizza.usdz",
+    ar: {
+      scale: 1,
+      placement: "floor"
+    },
     ingredients: ["Pizza Dough", "Ricotta", "Mozzarella", "Wild Mushrooms", "Garlic", "Truffle Oil"],
     tags: ["Gourmet", "White Pizza"],
     isVegetarian: true,
