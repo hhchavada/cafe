@@ -15,7 +15,9 @@ export interface MenuItem {
   shortDescription: string;
   image: string;
   model?: string; // URL to the GLB model
+  iosModelUrl?: string; // URL to the USDZ model for iOS AR
   modelScale?: number;
+  arScale?: number; // Physical scale adjustment for AR
   modelRotation?: [number, number, number];
   modelPosition?: [number, number, number];
   ingredients: string[];

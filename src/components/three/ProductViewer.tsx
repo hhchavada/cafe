@@ -3,6 +3,7 @@
 import React, { Suspense, useState, useEffect, useRef, useCallback } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Environment, ContactShadows, useGLTF, Center, Bounds } from "@react-three/drei";
+import * as THREE from "three";
 import Image from "next/image";
 import { Loader2, Maximize, Minimize, RefreshCw, Box } from "lucide-react";
 import { cn } from "../../lib/utils";
@@ -16,20 +17,23 @@ interface ProductViewerProps {
   modelPosition?: [number, number, number];
 }
 
-class ErrorBoundary extends React.Component<
-  { fallback: React.ReactNode; children: React.ReactNode; onError?: () => void },
-  { hasError: boolean }
-> {
-  constructor(props: any) {
+interface ErrorBoundaryProps {
+  fallback: React.ReactNode;
+  children: React.ReactNode;
+  onError?: () => void;
+}
+
+class ErrorBoundary extends React.Component<ErrorBoundaryProps, { hasError: boolean }> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error: any) {
+  static getDerivedStateFromError() {
     return { hasError: true };
   }
 
-  componentDidCatch(error: any, errorInfo: any) {
+  componentDidCatch(error: unknown) {
     console.error("3D Model failed to load:", error);
     if (this.props.onError) {
       this.props.onError();
@@ -47,10 +51,11 @@ class ErrorBoundary extends React.Component<
 function Model({ url, scale, rotation, position }: { url: string; scale?: number; rotation?: [number, number, number]; position?: [number, number, number] }) {
   const { scene } = useGLTF(url);
   
-  scene.traverse((child: any) => {
-    if (child.isMesh) {
-      child.castShadow = true;
-      child.receiveShadow = true;
+  scene.traverse((child: THREE.Object3D) => {
+    const mesh = child as THREE.Mesh;
+    if (mesh.isMesh) {
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
     }
   });
 
@@ -96,23 +101,28 @@ function FallbackView({ fallbackImage, productName }: { fallbackImage?: string; 
 }
 
 export function ProductViewer({ modelUrl, fallbackImage, productName, modelScale, modelRotation, modelPosition }: ProductViewerProps) {
-  const [modelExists, setModelExists] = useState<boolean | null>(null);
+  const [modelExists, setModelExists] = useState<boolean | null>(modelUrl ? null : false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [autoRotate, setAutoRotate] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const controlsRef = useRef<any>(null);
   const interactionTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Check if model URL is reachable
   useEffect(() => {
-    if (!modelUrl) {
-      setModelExists(false);
-      return;
-    }
+    if (!modelUrl) return;
     
+    let isMounted = true;
     fetch(modelUrl, { method: 'HEAD' })
-      .then(res => setModelExists(res.ok))
-      .catch(() => setModelExists(false));
+      .then(res => {
+        if (isMounted) setModelExists(res.ok);
+      })
+      .catch(() => {
+        if (isMounted) setModelExists(false);
+      });
+      
+    return () => { isMounted = false; };
   }, [modelUrl]);
 
   // Handle Fullscreen toggle

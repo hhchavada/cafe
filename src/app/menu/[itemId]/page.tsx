@@ -6,6 +6,7 @@ import { ProductViewer } from "../../../components/three/ProductViewer";
 import { Container } from "../../../components/ui/Container";
 import { Badge } from "../../../components/ui/Badge";
 import { Button } from "../../../components/ui/Button";
+import { ARViewer } from "../../../components/ar/ARViewer";
 
 interface PageProps {
   params: Promise<{
@@ -69,6 +70,14 @@ export default async function ProductDetailPage({ params }: PageProps) {
               <div className="mt-3 flex justify-center text-xs text-gray-400 sm:hidden">
                 Drag to rotate • Pinch to zoom
               </div>
+              
+              {item.model && (
+                <ARViewer 
+                  modelUrl={item.model} 
+                  iosModelUrl={item.iosModelUrl} 
+                  productName={item.name} 
+                />
+              )}
             </div>
 
             {/* Details Section */}

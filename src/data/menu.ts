@@ -12,6 +12,7 @@ export const menuItems: MenuItem[] = [
     shortDescription: "Signature beef patty with melted cheddar.",
     image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&q=80&w=800",
     model: "/models/burger.glb",
+    iosModelUrl: "/models/burger.usdz",
     ingredients: ["Beef Patty", "Cheddar Cheese", "Lettuce", "Tomato", "House Sauce", "Brioche Bun"],
     tags: ["Signature", "Hearty"],
     isVegetarian: false,

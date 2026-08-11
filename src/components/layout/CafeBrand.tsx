@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Cafe } from "../../types/cafe";
 
 interface CafeBrandProps {
@@ -8,7 +9,9 @@ export function CafeBrand({ cafe }: CafeBrandProps) {
   return (
     <div className="flex flex-col items-center justify-center py-6 text-center sm:py-8">
       {cafe.logoUrl ? (
-        <img src={cafe.logoUrl} alt={cafe.name} className="mb-3 h-12 w-12 rounded-full object-cover shadow-sm ring-1 ring-gray-100" />
+        <div className="relative mb-3 h-12 w-12 overflow-hidden rounded-full shadow-sm ring-1 ring-gray-100">
+          <Image src={cafe.logoUrl} alt={cafe.name} fill className="object-cover" />
+        </div>
       ) : (
         <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-black text-xl font-bold text-white shadow-sm">
           {cafe.name.charAt(0)}
