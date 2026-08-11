@@ -134,6 +134,11 @@ export const menuItems: MenuItem[] = [
     shortDescription: "Linguine in house-made basil pesto.",
     image: "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&q=80&w=800",
     model: "/models/pasta.glb",
+    iosModelUrl: "/models/pasta.usdz",
+    ar: {
+      scale: 1,
+      placement: "floor"
+    },
     ingredients: ["Linguine", "Basil", "Pine Nuts", "Garlic", "Parmesan", "Cherry Tomatoes", "Olive Oil"],
     tags: ["Fresh"],
     isVegetarian: true,
@@ -151,6 +156,11 @@ export const menuItems: MenuItem[] = [
     shortDescription: "Authentic Roman carbonara with guanciale.",
     image: "https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&q=80&w=800",
     model: "/models/pasta.glb",
+    iosModelUrl: "/models/pasta.usdz",
+    ar: {
+      scale: 1,
+      placement: "floor"
+    },
     ingredients: ["Spaghetti", "Guanciale", "Pecorino Romano", "Egg Yolks", "Black Pepper"],
     tags: ["Classic", "Rich"],
     isVegetarian: false,
