@@ -11,22 +11,28 @@ interface CategoryTabsProps {
 
 export function CategoryTabs({ categories, activeCategory, onSelectCategory }: CategoryTabsProps) {
   return (
-    <div className="sticky top-16 z-30 -mx-4 mb-6 overflow-x-auto border-b border-gray-100 bg-white/95 px-4 py-3 shadow-sm backdrop-blur-md sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-      <div className="flex space-x-2 sm:justify-center min-w-max">
-        {categories.map((category) => (
-          <button
-            key={category.id}
-            onClick={() => onSelectCategory(category.id)}
-            className={cn(
-              "whitespace-nowrap rounded-full px-5 py-2 text-sm font-medium transition-all active:scale-95",
-              activeCategory === category.id
-                ? "bg-black text-white shadow-md"
-                : "bg-gray-50 text-gray-600 hover:bg-gray-100"
-            )}
-          >
-            {category.name}
-          </button>
-        ))}
+    <div className="relative -mx-4 mb-8 overflow-x-auto sm:mx-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+      <div className="flex px-4 sm:px-0 min-w-max border-b border-card-border/50">
+        {categories.map((category) => {
+          const isActive = activeCategory === category.id;
+          return (
+            <button
+              key={category.id}
+              onClick={() => onSelectCategory(category.id)}
+              className={cn(
+                "relative py-4 px-5 text-sm sm:text-base font-medium transition-colors duration-300",
+                isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground/80"
+              )}
+            >
+              {category.name}
+              
+              {/* Active Indicator */}
+              {isActive && (
+                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-accent rounded-t-full shadow-[0_-2px_10px_rgba(199,135,82,0.4)]" />
+              )}
+            </button>
+          );
+        })}
       </div>
     </div>
   );

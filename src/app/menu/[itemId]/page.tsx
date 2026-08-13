@@ -1,12 +1,16 @@
-import { notFound } from "next/navigation";
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Check } from "lucide-react";
+import Image from "next/image";
+import { ArrowLeft } from "lucide-react";
 import { menuItems } from "../../../data/menu";
-import { ProductViewer } from "../../../components/three/ProductViewer";
-import { Container } from "../../../components/ui/Container";
 import { Badge } from "../../../components/ui/Badge";
-import { Button } from "../../../components/ui/Button";
-import { ARViewer } from "../../../components/ar/ARViewer";
+import { Explore3DButton } from "../../../components/product/Explore3DButton";
+import { Product3DOverlay } from "../../../components/product/Product3DOverlay";
+import { FadeIn } from "../../../components/animations/FadeIn";
+import { notFound } from "next/navigation";
+import { use } from "react";
 
 interface PageProps {
   params: Promise<{
@@ -14,135 +18,90 @@ interface PageProps {
   }>;
 }
 
-export function generateStaticParams() {
-  return menuItems.map((item) => ({
-    itemId: item.slug,
-  }));
-}
-
-export default async function ProductDetailPage({ params }: PageProps) {
-  const resolvedParams = await params;
+export default function ProductDetailPage({ params }: PageProps) {
+  const resolvedParams = use(params);
   const item = menuItems.find((m) => m.slug === resolvedParams.itemId);
+  const [is3DOpen, setIs3DOpen] = useState(false);
 
   if (!item) {
     notFound();
   }
 
   return (
-    <div className="min-h-screen bg-white pb-24">
-      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md">
-        <Container>
-          <div className="flex h-16 items-center gap-4">
-            <Link 
-              href="/"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-gray-900 transition-colors hover:bg-gray-200"
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </Link>
-            <h1 className="text-lg font-semibold text-gray-900">{item.name}</h1>
-          </div>
-        </Container>
-      </header>
+    <div className="relative min-h-screen bg-background selection:bg-accent/30 selection:text-foreground pb-24">
+      {/* Floating Back Button */}
+      <div className="fixed top-0 left-0 z-40 w-full p-4 sm:p-6 sm:pt-safe pt-safe pointer-events-none">
+        <Link 
+          href="/"
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-md transition-transform active:scale-90 border border-white/10 shadow-sm pointer-events-auto"
+        >
+          <ArrowLeft className="h-5 w-5" />
+        </Link>
+      </div>
 
-      <main>
-        <div className="w-full sm:px-4 sm:py-6 lg:px-8 max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
-            
-            {/* Viewer Section */}
-            <div className="w-full lg:sticky lg:top-24 lg:h-fit relative">
-              <ProductViewer 
-                modelUrl={item.model} 
-                fallbackImage={item.image} 
-                productName={item.name} 
-                modelScale={item.modelScale}
-                modelRotation={item.modelRotation}
-                modelPosition={item.modelPosition}
+      {/* Hero Visual */}
+      <FadeIn className="relative w-full h-[55vh] sm:h-[60vh] max-h-[800px] bg-muted rounded-b-[2.5rem] overflow-hidden shadow-2xl">
+        <Image
+          src={item.image}
+          alt={item.name}
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
+        {/* Subtle premium gradients */}
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-black/20 to-transparent opacity-90" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(0,0,0,0.4)_100%)] mix-blend-multiply opacity-50" />
+      </FadeIn>
+
+      {/* Content Section */}
+      <main className="relative z-10 max-w-4xl mx-auto px-6 sm:px-10 -mt-8">
+        <FadeIn delay={200} className="flex flex-col md:flex-row md:items-start gap-10">
+          
+          {/* Main Info Column */}
+          <div className="flex-1">
+            <div className="flex flex-wrap gap-2 mb-4">
+              {item.featured && <Badge variant="warning">Signature</Badge>}
+              {item.vegetarian && <Badge variant="success">Vegetarian</Badge>}
+            </div>
+
+            <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl text-foreground tracking-tight drop-shadow-sm">
+              {item.name}
+            </h1>
+
+            <div className="mt-3 flex items-center gap-2">
+              <span className="text-accent tracking-widest text-sm">★★★★★</span>
+              <span className="text-muted-foreground/60 text-xs font-medium tracking-wider">4.8</span>
+            </div>
+
+            <p className="mt-6 text-muted-foreground leading-relaxed text-base sm:text-lg font-light max-w-2xl">
+              {item.description}
+            </p>
+          </div>
+
+          {/* Action Column */}
+          <div className="md:w-64 flex flex-col items-start md:items-end gap-6 shrink-0">
+            <div className="font-serif text-4xl sm:text-5xl text-accent drop-shadow-sm">
+              {item.currency}{item.price.toFixed(2)}
+            </div>
+
+            {item.has3DModel && (
+              <Explore3DButton 
+                onClick={() => setIs3DOpen(true)} 
+                className="w-full md:w-auto" 
+                disabled={!item.modelUrl}
               />
-              {item.model && (
-                <div className="absolute top-4 left-4 z-20 flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold tracking-wide text-gray-800 shadow-sm backdrop-blur-md uppercase pointer-events-none">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-                  </span>
-                  Interactive 3D
-                </div>
-              )}
-              <div className="mt-3 flex justify-center text-xs text-gray-400 sm:hidden">
-                Drag to rotate • Pinch to zoom
-              </div>
-              
-              {item.model && (
-                <ARViewer 
-                  modelUrl={item.model} 
-                  iosModelUrl={item.iosModelUrl} 
-                  productName={item.name} 
-                  arConfig={item.ar}
-                />
-              )}
-            </div>
-
-            {/* Details Section */}
-            <div className="px-4 sm:px-0">
-              <div className="mb-4 flex flex-wrap gap-2">
-                {item.isPopular && <Badge variant="warning">Popular</Badge>}
-                {item.isVegetarian && <Badge variant="success">Vegetarian</Badge>}
-              </div>
-
-              <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
-                {item.name}
-              </h1>
-              
-              <div className="mt-4 text-2xl font-medium text-black">
-                {item.currency}{item.price.toFixed(2)}
-              </div>
-
-              <div className="mt-6 prose prose-gray">
-                <p className="text-gray-600 leading-relaxed">{item.description}</p>
-              </div>
-
-              {item.ingredients.length > 0 && (
-                <div className="mt-8 border-t border-gray-100 pt-8">
-                  <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-900">
-                    Ingredients
-                  </h3>
-                  <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                    {item.ingredients.map((ingredient, i) => (
-                      <li key={i} className="flex items-center gap-3 text-sm text-gray-600">
-                        <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-50 text-green-600">
-                          <Check className="h-3 w-3" />
-                        </div>
-                        {ingredient}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {item.tags.length > 0 && (
-                <div className="mt-8 border-t border-gray-100 pt-8">
-                  <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-900">
-                    Tags
-                  </h3>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {item.tags.map((tag, i) => (
-                      <span key={i} className="rounded-full bg-gray-50 px-3 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-200/50">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Order/Action Button (Placeholder for future) */}
-              <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-gray-100 bg-white p-4 sm:static sm:mt-10 sm:border-t-0 sm:bg-transparent sm:p-0">
-                <Button className="w-full text-base sm:w-auto" size="lg">
-                  Order Now - {item.currency}{item.price.toFixed(2)}
-                </Button>
-              </div>
-            </div>
+            )}
           </div>
-        </div>
+        </FadeIn>
       </main>
+
+      {/* 3D Overlay Container */}
+      <Product3DOverlay 
+        isOpen={is3DOpen} 
+        onClose={() => setIs3DOpen(false)} 
+        modelUrl={item.modelUrl} 
+      />
     </div>
   );
 }

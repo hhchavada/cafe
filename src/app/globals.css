@@ -1,17 +1,73 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Premium Espresso / Coffee Theme */
+  --background: #171311; /* Deep Espresso */
+  --foreground: #FDFBF7; /* Warm Cream */
+  
+  --muted: #26201D; /* Dark Brown Surface */
+  --muted-foreground: #D6D1C9; /* Muted Cream */
+  
+  --accent: #C78752; /* Copper Accent */
+  --accent-foreground: #FFFFFF;
+  
+  --card: #1C1715; /* Elevated Surface */
+  --card-border: rgba(253, 251, 247, 0.05); /* Very subtle divider */
+  
+  --success: #606C38; /* Muted botanical green */
+  --success-foreground: #FDFBF7;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-card-border: var(--card-border);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-playfair), ui-serif, Georgia, serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
 }
+
+/* Premium Utilities */
+.glass-panel {
+  background: rgba(28, 23, 21, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.text-gradient {
+  background: linear-gradient(to right, #D6D1C9, #C78752);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Animation Utilities */
+.animate-cinematic-enter {
+  animation: cinematicEnter 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes cinematicEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(15px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
