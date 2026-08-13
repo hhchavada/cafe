@@ -102,14 +102,7 @@ export function Product3DOverlay({ isOpen, onClose, modelUrl }: Product3DOverlay
         <LazyProductViewer modelUrl={modelUrl} />
       </div>
 
-      {/* Bottom UI Instruction */}
-      <div className="absolute bottom-safe sm:bottom-8 z-20 pointer-events-none mb-8">
-        <div className="rounded-full bg-black/40 px-6 py-2 backdrop-blur-md border border-white/10 shadow-lg">
-          <p className="text-xs font-semibold tracking-[0.2em] uppercase text-white/90">
-            Drag to Explore
-          </p>
-        </div>
-      </div>
+
     </div>
   );
 }
