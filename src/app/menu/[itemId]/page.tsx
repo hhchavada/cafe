@@ -9,6 +9,8 @@ import { Badge } from "../../../components/ui/Badge";
 import { Explore3DButton } from "../../../components/product/Explore3DButton";
 import { Product3DOverlay } from "../../../components/product/Product3DOverlay";
 import { FadeIn } from "../../../components/animations/FadeIn";
+import dynamic from "next/dynamic";
+import { Loader2 } from "lucide-react";
 import { notFound } from "next/navigation";
 import { use } from "react";
 
@@ -17,6 +19,21 @@ interface PageProps {
     itemId: string;
   }>;
 }
+
+const LazyProductViewer = dynamic(
+  () => import("../../../components/three/ProductViewer").then(mod => mod.ProductViewer),
+  { 
+    ssr: false,
+    loading: () => (
+      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-[#110e0c]">
+        <div className="relative flex h-12 w-12 items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-accent" />
+          <div className="absolute inset-0 rounded-full border-2 border-accent/20" />
+        </div>
+      </div>
+    )
+  }
+);
 
 export default function ProductDetailPage({ params }: PageProps) {
   const resolvedParams = use(params);
@@ -27,8 +44,13 @@ export default function ProductDetailPage({ params }: PageProps) {
     notFound();
   }
 
+  const activeModelUrl = item.optimizedModelUrl || item.modelUrl;
+
   return (
     <div className="relative min-h-screen bg-background selection:bg-accent/30 selection:text-foreground pb-24">
+      {/* Background Preload of GLB */}
+      <link rel="preload" href={activeModelUrl} as="fetch" crossOrigin="anonymous" />
+      
       {/* Floating Back Button */}
       <div className="fixed top-0 left-0 z-40 w-full p-4 sm:p-6 sm:pt-safe pt-safe pointer-events-none">
         <Link 
@@ -40,15 +62,19 @@ export default function ProductDetailPage({ params }: PageProps) {
       </div>
 
       {/* Hero Visual */}
-      <FadeIn className="relative w-full h-[55vh] sm:h-[60vh] max-h-[800px] bg-muted rounded-b-[2.5rem] overflow-hidden shadow-2xl">
-        <Image
-          src={item.image}
-          alt={item.name}
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
+      <FadeIn className="relative w-full h-[55vh] sm:h-[60vh] max-h-[800px] bg-[#110e0c] rounded-b-[2.5rem] overflow-hidden shadow-2xl pointer-events-none">
+        {item.has3DModel ? (
+          <LazyProductViewer modelUrl={activeModelUrl} interactiveMode="display" />
+        ) : (
+          <Image
+            src={item.image}
+            alt={item.name}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+        )}
         {/* Subtle premium gradients */}
         <div className="absolute inset-0 bg-gradient-to-t from-background via-black/20 to-transparent opacity-90" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(0,0,0,0.4)_100%)] mix-blend-multiply opacity-50" />
@@ -84,32 +110,6 @@ export default function ProductDetailPage({ params }: PageProps) {
             <div className="font-serif text-4xl sm:text-5xl text-accent drop-shadow-sm">
               {item.currency}{item.price.toFixed(2)}
             </div>
-
-            {/* 3D Teaser Section */}
-            {item.previewImageUrl && (
-              <div className="w-full flex flex-col items-center md:items-end gap-3 mt-4">
-                <p className="text-xs font-bold tracking-widest text-muted-foreground uppercase text-center md:text-right">
-                  Signature Dish
-                </p>
-                <div className="relative w-full max-w-[280px] aspect-square bg-[#171311] rounded-2xl border border-white/5 overflow-hidden flex items-center justify-center animate-in fade-in zoom-in-[0.98] duration-700 ease-out shadow-2xl">
-                  <Image
-                    src={item.previewImageUrl}
-                    alt={`${item.name} 3D Preview`}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 280px"
-                    className="object-contain p-4 transition-transform duration-700 hover:scale-105"
-                  />
-                  <div className="absolute bottom-4 left-0 right-0 text-center pointer-events-none">
-                    <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-accent/90 bg-black/40 px-3 py-1 rounded-full backdrop-blur-md border border-accent/20">
-                      360° View
-                    </span>
-                  </div>
-                </div>
-                <p className="text-xs text-muted-foreground text-center md:text-right max-w-[240px] mb-2 font-light">
-                  Explore this dish in 3D and view it from every angle.
-                </p>
-              </div>
-            )}
 
             {item.has3DModel && (
               <Explore3DButton 
