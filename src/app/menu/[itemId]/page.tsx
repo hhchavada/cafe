@@ -44,12 +44,14 @@ export default function ProductDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  const activeModelUrl = item.optimizedModelUrl || item.modelUrl;
+  const activeModelUrl = item.optimizedModelUrl || item.modelUrl || "";
 
   return (
     <div className="relative min-h-screen bg-background selection:bg-accent/30 selection:text-foreground pb-24">
       {/* Background Preload of GLB */}
-      <link rel="preload" href={activeModelUrl} as="fetch" crossOrigin="anonymous" />
+      {activeModelUrl && (
+        <link rel="preload" href={activeModelUrl} as="fetch" crossOrigin="anonymous" />
+      )}
       
       {/* Floating Back Button */}
       <div className="fixed top-0 left-0 z-40 w-full p-4 sm:p-6 sm:pt-safe pt-safe pointer-events-none">
