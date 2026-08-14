@@ -8,7 +8,7 @@ import { Loader2, AlertCircle, RefreshCw, MousePointer2, X } from "lucide-react"
 
 interface ProductViewerProps {
   modelUrl: string;
-  interactiveMode?: "auto" | "click-to-interact";
+  interactiveMode?: "auto" | "click-to-interact" | "display";
 }
 
 // ... Model and ModelErrorBoundary remain same ...
