@@ -80,15 +80,41 @@ export default function ProductDetailPage({ params }: PageProps) {
           </div>
 
           {/* Action Column */}
-          <div className="md:w-64 flex flex-col items-start md:items-end gap-6 shrink-0">
+          <div className="md:w-72 flex flex-col items-start md:items-end gap-6 shrink-0 mt-8 md:mt-0">
             <div className="font-serif text-4xl sm:text-5xl text-accent drop-shadow-sm">
               {item.currency}{item.price.toFixed(2)}
             </div>
 
+            {/* 3D Teaser Section */}
+            {item.previewImageUrl && (
+              <div className="w-full flex flex-col items-center md:items-end gap-3 mt-4">
+                <p className="text-xs font-bold tracking-widest text-muted-foreground uppercase text-center md:text-right">
+                  Signature Dish
+                </p>
+                <div className="relative w-full max-w-[280px] aspect-square bg-[#171311] rounded-2xl border border-white/5 overflow-hidden flex items-center justify-center animate-in fade-in zoom-in-[0.98] duration-700 ease-out shadow-2xl">
+                  <Image
+                    src={item.previewImageUrl}
+                    alt={`${item.name} 3D Preview`}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 280px"
+                    className="object-contain p-4 transition-transform duration-700 hover:scale-105"
+                  />
+                  <div className="absolute bottom-4 left-0 right-0 text-center pointer-events-none">
+                    <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-accent/90 bg-black/40 px-3 py-1 rounded-full backdrop-blur-md border border-accent/20">
+                      360° View
+                    </span>
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground text-center md:text-right max-w-[240px] mb-2 font-light">
+                  Explore this dish in 3D and view it from every angle.
+                </p>
+              </div>
+            )}
+
             {item.has3DModel && (
               <Explore3DButton 
                 onClick={() => setIs3DOpen(true)} 
-                className="w-full md:w-auto" 
+                className="w-full max-w-[280px]" 
                 disabled={!item.modelUrl}
               />
             )}
@@ -100,7 +126,7 @@ export default function ProductDetailPage({ params }: PageProps) {
       <Product3DOverlay 
         isOpen={is3DOpen} 
         onClose={() => setIs3DOpen(false)} 
-        modelUrl={item.modelUrl} 
+        modelUrl={item.optimizedModelUrl || item.modelUrl} 
       />
     </div>
   );

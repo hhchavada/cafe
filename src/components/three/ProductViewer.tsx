@@ -11,7 +11,8 @@ interface ProductViewerProps {
 }
 
 function Model({ url }: { url: string }) {
-  const { scene } = useGLTF(url);
+  // Use the official Google Draco decoder CDN so compressed geometries can be decoded
+  const { scene } = useGLTF(url, "https://www.gstatic.com/draco/v1/decoders/");
   
   // Enable shadows on all meshes
   useEffect(() => {

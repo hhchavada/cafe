@@ -20,6 +20,8 @@ export interface MenuItem {
   featured: boolean;
   has3DModel: boolean;
   modelUrl?: string; // URL to the GLB model
+  optimizedModelUrl?: string; // URL to the heavily optimized mobile-friendly GLB
+  previewImageUrl?: string; // Static WebP preview of the 3D model
   iosModelUrl?: string; // URL to the USDZ model for iOS AR
   
   // AR positioning (optional)
