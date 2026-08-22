@@ -7,7 +7,7 @@ import { menuItems } from "../../../data/menu";
 
 // The model component
 function Model({ url, onLoad }: { url: string; onLoad?: () => void }) {
-  const { scene } = useGLTF(url);
+  const { scene } = useGLTF(url, "https://www.gstatic.com/draco/v1/decoders/");
   
   // Call onLoad after a brief delay to ensure it's rendered
   setTimeout(() => {

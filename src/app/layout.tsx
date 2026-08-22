@@ -31,8 +31,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable} antialiased`}>
-      <body className="min-h-full flex flex-col font-sans overflow-x-hidden selection:bg-accent/30 selection:text-foreground">
+    <html lang="en" className={`${inter.variable} ${playfair.variable} antialiased`} suppressHydrationWarning>
+      <body
+        className="min-h-full flex flex-col font-sans overflow-x-hidden selection:bg-accent/30 selection:text-foreground"
+        suppressHydrationWarning
+      >
         {children}
       </body>
     </html>

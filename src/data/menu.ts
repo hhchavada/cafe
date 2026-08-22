@@ -27,7 +27,7 @@ export const menuItems: MenuItem[] = [
     featured: true,
     has3DModel: true,
     modelUrl: "https://ellips.sfo3.cdn.digitaloceanspaces.com/media/burger-v1.glb",
-    optimizedModelUrl: "/models/burger-v1.glb",
+    optimizedModelUrl: "/web-models/burger-v1.glb",
     previewImageUrl: "/3d-previews/burger.webp",
   },
   {
@@ -46,7 +46,7 @@ export const menuItems: MenuItem[] = [
     featured: true,
     has3DModel: true,
     modelUrl: "https://ellips.sfo3.cdn.digitaloceanspaces.com/media/pizza-v1.glb",
-    optimizedModelUrl: "/models/pizza-v1.glb",
+    optimizedModelUrl: "/web-models/pizza-v1.glb",
     previewImageUrl: "/3d-previews/pizza.webp",
   },
   {
@@ -65,7 +65,7 @@ export const menuItems: MenuItem[] = [
     featured: true,
     has3DModel: true,
     modelUrl: "https://ellips.sfo3.cdn.digitaloceanspaces.com/media/Mint_Cucumber_Lime-v1.glb",
-    optimizedModelUrl: "/models/Mint_Cucumber_Lime-v1.glb",
+    optimizedModelUrl: "/web-models/Mint_Cucumber_Lime-v1.glb",
     previewImageUrl: "/3d-previews/mocktail.webp",
   },
   {
@@ -84,7 +84,7 @@ export const menuItems: MenuItem[] = [
     featured: true,
     has3DModel: true,
     modelUrl: "https://ellips.sfo3.cdn.digitaloceanspaces.com/media/Paneer_Comfort_Curry-v1.glb",
-    optimizedModelUrl: "/models/Paneer_Comfort_Curry-v1.glb",
+    optimizedModelUrl: "/web-models/Paneer_Comfort_Curry-v1.glb",
     previewImageUrl: "/3d-previews/paneer-tikka-masala.webp",
   },
   {
@@ -103,7 +103,7 @@ export const menuItems: MenuItem[] = [
     featured: true,
     has3DModel: true,
     modelUrl: "https://ellips.sfo3.cdn.digitaloceanspaces.com/media/Crispy_Chili_Noodle-v1.glb",
-    optimizedModelUrl: "/models/Crispy_Chili_Noodle-v1.glb",
+    optimizedModelUrl: "/web-models/Crispy_Chili_Noodle-v1.glb",
     previewImageUrl: "/3d-previews/taiwanese-noodles.webp",
   },
   {
@@ -122,7 +122,7 @@ export const menuItems: MenuItem[] = [
     featured: true,
     has3DModel: true,
     modelUrl: "https://ellips.sfo3.cdn.digitaloceanspaces.com/media/Meshy_AI_Garden_Orzo_Delight_0813065557_texture-v1.glb",
-    optimizedModelUrl: "/models/Meshy_AI_Garden_Orzo_Delight_0813065557_texture-v1.glb",
+    optimizedModelUrl: "/web-models/Meshy_AI_Garden_Orzo_Delight_0813065557_texture-v1.glb",
     previewImageUrl: "/3d-previews/white-sauce-pasta.webp",
   }
 ];

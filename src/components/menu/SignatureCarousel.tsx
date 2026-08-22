@@ -1,11 +1,53 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { MenuItem } from "../../types/menu";
 import { Box } from "lucide-react";
 import { FadeIn } from "../animations/FadeIn";
 import { cn } from "../../lib/utils";
+
+function CardPreview({ item }: { item: MenuItem }) {
+  const [src, setSrc] = useState(item.previewImageUrl || item.image);
+  const usingPreview = Boolean(item.previewImageUrl) && src === item.previewImageUrl;
+
+  return (
+    <>
+      <Image
+        src={src}
+        alt={item.name}
+        fill
+        className={cn(
+          "transition-transform duration-700 group-hover:scale-105",
+          usingPreview ? "object-contain p-2" : "object-cover"
+        )}
+        sizes="(max-width: 768px) 85vw, (max-width: 1024px) 45vw, 30vw"
+        onError={() => {
+          if (src !== item.image) setSrc(item.image);
+        }}
+      />
+      {!usingPreview && (
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+      )}
+
+      {usingPreview ? (
+        <div className="absolute top-4 right-4 z-10 flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 backdrop-blur-md border border-accent/20 transition-all group-hover:border-accent/60 group-hover:bg-black/80">
+          <span className="text-[10px] font-bold tracking-widest text-accent uppercase">
+            ✨ 360° VIEW
+          </span>
+        </div>
+      ) : item.has3DModel ? (
+        <div className="absolute top-4 right-4 z-10 flex items-center gap-1.5 rounded-full bg-black/40 px-2.5 py-1 backdrop-blur-md border border-white/10 transition-colors group-hover:border-accent/40 group-hover:bg-black/60">
+          <Box className="h-3 w-3 text-accent group-hover:animate-pulse" />
+          <span className="text-[9px] font-bold tracking-widest text-white uppercase">
+            3D
+          </span>
+        </div>
+      ) : null}
+    </>
+  );
+}
 
 interface SignatureCarouselProps {
   items: MenuItem[];
@@ -31,37 +73,8 @@ export function SignatureCarousel({ items }: SignatureCarouselProps) {
               href={`/menu/${item.slug}`}
               className="group block relative w-full h-[380px] sm:h-[420px] rounded-2xl overflow-hidden bg-card border border-card-border shadow-lg transition-all duration-500 hover:shadow-2xl hover:-translate-y-1"
             >
-              {/* Image Section */}
               <div className="relative w-full h-[65%] overflow-hidden bg-[#171311]">
-                <Image
-                  src={item.previewImageUrl || item.image}
-                  alt={item.name}
-                  fill
-                  className={cn(
-                    "transition-transform duration-700 group-hover:scale-105",
-                    item.previewImageUrl ? "object-contain p-2" : "object-cover"
-                  )}
-                  sizes="(max-width: 768px) 85vw, (max-width: 1024px) 45vw, 30vw"
-                />
-                {!item.previewImageUrl && (
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                )}
-                
-                {/* 3D Indicator */}
-                {item.previewImageUrl ? (
-                  <div className="absolute top-4 right-4 z-10 flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 backdrop-blur-md border border-accent/20 transition-all group-hover:border-accent/60 group-hover:bg-black/80">
-                    <span className="text-[10px] font-bold tracking-widest text-accent uppercase">
-                      ✨ 360° VIEW
-                    </span>
-                  </div>
-                ) : item.has3DModel ? (
-                  <div className="absolute top-4 right-4 z-10 flex items-center gap-1.5 rounded-full bg-black/40 px-2.5 py-1 backdrop-blur-md border border-white/10 transition-colors group-hover:border-accent/40 group-hover:bg-black/60">
-                    <Box className="h-3 w-3 text-accent group-hover:animate-pulse" />
-                    <span className="text-[9px] font-bold tracking-widest text-white uppercase">
-                      3D
-                    </span>
-                  </div>
-                ) : null}
+                <CardPreview item={item} />
               </div>
 
               {/* Content Section */}

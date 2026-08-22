@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "compress": "node compress.mjs"
+    "compress": "node compress.mjs",
+    "compress:web": "node scripts/compress-web.mjs",
+    "inspect:models": "node scripts/inspect-models.mjs",
+    "generate:previews": "node scripts/generate-previews.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.8",
@@ -33,6 +36,8 @@
     "draco3dgltf": "^1.5.7",
     "eslint": "^9",
     "eslint-config-next": "16.3.0",
+    "meshoptimizer": "^1.2.0",
+    "puppeteer-core": "^25.8.0",
     "sharp": "^0.32.6",
     "tailwindcss": "^4",
     "typescript": "^5"
