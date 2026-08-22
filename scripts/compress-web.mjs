@@ -6,7 +6,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
 
-const TARGET_MB = 5;
+const TARGET_MB = 3;
 const MIN_TRIANGLES = 80_000;
 const INPUT_DIR = 'optimized-models';
 const OUTPUT_DIR = 'web-models';
