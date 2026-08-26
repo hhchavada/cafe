@@ -4,6 +4,16 @@ export interface Category {
   slug: string;
 }
 
+export interface NutritionInfo {
+  calories: number;
+  protein: number; // g
+  carbohydrates: number; // g
+  fat: number; // g
+  fiber: number; // g
+  sugar: number; // g
+  sodium: number; // mg
+}
+
 export interface MenuItem {
   id: string;
   name: string;
@@ -23,6 +33,7 @@ export interface MenuItem {
   optimizedModelUrl?: string; // URL to the heavily optimized mobile-friendly GLB
   previewImageUrl?: string; // Static WebP preview of the 3D model
   iosModelUrl?: string; // URL to the USDZ model for iOS AR
+  nutrition?: NutritionInfo;
   
   // AR positioning (optional)
   modelScale?: number;

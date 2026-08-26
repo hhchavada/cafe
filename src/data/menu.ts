@@ -29,6 +29,15 @@ export const menuItems: MenuItem[] = [
     modelUrl: "https://ellips.sfo3.cdn.digitaloceanspaces.com/media/burger-v1.glb",
     optimizedModelUrl: "/web-models/burger-v1.glb",
     previewImageUrl: "/3d-previews/burger.webp",
+    nutrition: {
+      calories: 520,
+      protein: 28,
+      carbohydrates: 42,
+      fat: 25,
+      fiber: 3,
+      sugar: 6,
+      sodium: 890,
+    },
   },
   {
     id: "pizza",
@@ -48,6 +57,15 @@ export const menuItems: MenuItem[] = [
     modelUrl: "https://ellips.sfo3.cdn.digitaloceanspaces.com/media/pizza-v1.glb",
     optimizedModelUrl: "/web-models/pizza-v1.glb",
     previewImageUrl: "/3d-previews/pizza.webp",
+    nutrition: {
+      calories: 680,
+      protein: 24,
+      carbohydrates: 78,
+      fat: 28,
+      fiber: 4,
+      sugar: 8,
+      sodium: 1120,
+    },
   },
   {
     id: "mocktail",
@@ -67,6 +85,15 @@ export const menuItems: MenuItem[] = [
     modelUrl: "https://ellips.sfo3.cdn.digitaloceanspaces.com/media/Mint_Cucumber_Lime-v1.glb",
     optimizedModelUrl: "/web-models/Mint_Cucumber_Lime-v1.glb",
     previewImageUrl: "/3d-previews/mocktail.webp",
+    nutrition: {
+      calories: 95,
+      protein: 0,
+      carbohydrates: 24,
+      fat: 0,
+      fiber: 1,
+      sugar: 20,
+      sodium: 12,
+    },
   },
   {
     id: "paneer-tikka-masala",
@@ -86,6 +113,15 @@ export const menuItems: MenuItem[] = [
     modelUrl: "https://ellips.sfo3.cdn.digitaloceanspaces.com/media/Paneer_Comfort_Curry-v1.glb",
     optimizedModelUrl: "/web-models/Paneer_Comfort_Curry-v1.glb",
     previewImageUrl: "/3d-previews/paneer-tikka-masala.webp",
+    nutrition: {
+      calories: 480,
+      protein: 22,
+      carbohydrates: 18,
+      fat: 34,
+      fiber: 3,
+      sugar: 7,
+      sodium: 760,
+    },
   },
   {
     id: "taiwanese-noodles",
@@ -105,6 +141,15 @@ export const menuItems: MenuItem[] = [
     modelUrl: "https://ellips.sfo3.cdn.digitaloceanspaces.com/media/Crispy_Chili_Noodle-v1.glb",
     optimizedModelUrl: "/web-models/Crispy_Chili_Noodle-v1.glb",
     previewImageUrl: "/3d-previews/taiwanese-noodles.webp",
+    nutrition: {
+      calories: 540,
+      protein: 16,
+      carbohydrates: 68,
+      fat: 22,
+      fiber: 5,
+      sugar: 9,
+      sodium: 980,
+    },
   },
   {
     id: "white-sauce-pasta",
@@ -124,5 +169,14 @@ export const menuItems: MenuItem[] = [
     modelUrl: "https://ellips.sfo3.cdn.digitaloceanspaces.com/media/Meshy_AI_Garden_Orzo_Delight_0813065557_texture-v1.glb",
     optimizedModelUrl: "/web-models/Meshy_AI_Garden_Orzo_Delight_0813065557_texture-v1.glb",
     previewImageUrl: "/3d-previews/white-sauce-pasta.webp",
-  }
+    nutrition: {
+      calories: 610,
+      protein: 18,
+      carbohydrates: 72,
+      fat: 26,
+      fiber: 4,
+      sugar: 5,
+      sodium: 640,
+    },
+  },
 ];

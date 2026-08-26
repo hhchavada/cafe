@@ -2,13 +2,12 @@
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { ArrowLeft, Loader2, Maximize, Minimize } from "lucide-react";
+import { ArrowLeft, Leaf, Loader2, Maximize, Minimize } from "lucide-react";
 import { cn } from "../../lib/utils";
 
-// Lazy load the heavy 3D viewer component
 const LazyProductViewer = dynamic(
-  () => import("../../components/three/ProductViewer").then(mod => mod.ProductViewer),
-  { 
+  () => import("../../components/three/ProductViewer").then((mod) => mod.ProductViewer),
+  {
     ssr: false,
     loading: () => (
       <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-background">
@@ -20,7 +19,7 @@ const LazyProductViewer = dynamic(
           Preparing 3D View
         </p>
       </div>
-    )
+    ),
   }
 );
 
@@ -28,9 +27,15 @@ interface Product3DOverlayProps {
   isOpen: boolean;
   onClose: () => void;
   modelUrl?: string;
+  onNutritionClick?: () => void;
 }
 
-export function Product3DOverlay({ isOpen, onClose, modelUrl }: Product3DOverlayProps) {
+export function Product3DOverlay({
+  isOpen,
+  onClose,
+  modelUrl,
+  onNutritionClick,
+}: Product3DOverlayProps) {
   const [shouldRender, setShouldRender] = useState(false);
   const [animateIn, setAnimateIn] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -38,14 +43,13 @@ export function Product3DOverlay({ isOpen, onClose, modelUrl }: Product3DOverlay
   useEffect(() => {
     if (isOpen) {
       setShouldRender(true);
-      // Small delay to allow mounting before triggering animation class
       const t = requestAnimationFrame(() => setAnimateIn(true));
       return () => cancelAnimationFrame(t);
-    } else {
-      setAnimateIn(false);
-      const t = setTimeout(() => setShouldRender(false), 500); // Wait for transition out
-      return () => clearTimeout(t);
     }
+
+    setAnimateIn(false);
+    const t = setTimeout(() => setShouldRender(false), 500);
+    return () => clearTimeout(t);
   }, [isOpen]);
 
   const toggleFullscreen = () => {
@@ -69,37 +73,50 @@ export function Product3DOverlay({ isOpen, onClose, modelUrl }: Product3DOverlay
   if (!shouldRender || !modelUrl) return null;
 
   return (
-    <div 
+    <div
       className={cn(
         "fixed inset-0 z-50 flex flex-col items-center justify-center bg-background transition-all duration-500 ease-out",
         animateIn ? "opacity-100" : "opacity-0 pointer-events-none"
       )}
     >
-      {/* Top UI */}
       <div className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between p-4 sm:p-6 sm:pt-safe pt-safe">
-        <button 
+        <button
           onClick={onClose}
           className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-md transition-transform active:scale-90 border border-white/10 shadow-sm"
         >
           <ArrowLeft className="h-5 w-5 sm:h-6 sm:w-6" />
         </button>
 
-        <button 
+        <button
           onClick={toggleFullscreen}
           className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-md transition-transform active:scale-90 border border-white/10 shadow-sm"
         >
-          {isFullscreen ? <Minimize className="h-5 w-5 sm:h-6 sm:w-6" /> : <Maximize className="h-5 w-5 sm:h-6 sm:w-6" />}
+          {isFullscreen ? (
+            <Minimize className="h-5 w-5 sm:h-6 sm:w-6" />
+          ) : (
+            <Maximize className="h-5 w-5 sm:h-6 sm:w-6" />
+          )}
         </button>
       </div>
 
-      {/* 3D Canvas — unmount immediately on close so the hero can reuse WebGL */}
       {isOpen && (
         <div className="w-full h-full">
           <LazyProductViewer modelUrl={modelUrl} />
         </div>
       )}
 
-
+      {onNutritionClick && (
+        <div className="absolute bottom-0 left-0 right-0 z-20 flex justify-center p-4 sm:p-6 pb-safe pointer-events-none">
+          <button
+            type="button"
+            onClick={onNutritionClick}
+            className="pointer-events-auto inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/55 px-5 py-3 text-xs font-semibold tracking-[0.18em] uppercase text-white backdrop-blur-md transition-all hover:border-accent/50 hover:bg-black/70 active:scale-95 shadow-lg"
+          >
+            <Leaf className="h-3.5 w-3.5 text-accent" />
+            Nutrition
+          </button>
+        </div>
+      )}
     </div>
   );
 }
