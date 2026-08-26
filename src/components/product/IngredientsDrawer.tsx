@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import Image from "next/image";
 import { X } from "lucide-react";
 import { cn } from "../../lib/utils";
 
@@ -79,14 +78,12 @@ export function IngredientsDrawer({
           </button>
         </div>
 
-        <div className="relative flex-1 bg-[#110e0c]">
-          <Image
+        <div className="relative flex-1 min-h-0 bg-[#110e0c]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src={imageUrl}
             alt={`${productName || "Dish"} ingredients`}
-            fill
-            className="object-contain p-4"
-            sizes="(max-width: 768px) 100vw, 512px"
-            priority
+            className="absolute inset-0 h-full w-full object-contain p-4"
           />
         </div>
       </aside>
