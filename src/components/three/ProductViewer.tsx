@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useRef, useCallback, useState, useEffect, Suspense } from "react";
+import React, { useRef, useCallback, useState, useEffect, useMemo, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Environment, ContactShadows, useGLTF, Center, Bounds } from "@react-three/drei";
+import { SkeletonUtils } from "three-stdlib";
 import * as THREE from "three";
 import { Loader2, AlertCircle, RefreshCw, MousePointer2, X } from "lucide-react";
 
@@ -14,19 +15,22 @@ interface ProductViewerProps {
 // ... Model and ModelErrorBoundary remain same ...
 function Model({ url }: { url: string }) {
   const { scene } = useGLTF(url, "https://www.gstatic.com/draco/v1/decoders/");
+  const clonedScene = useMemo(() => SkeletonUtils.clone(scene) as THREE.Group, [scene]);
+
   useEffect(() => {
-    scene.traverse((child: THREE.Object3D) => {
+    clonedScene.traverse((child: THREE.Object3D) => {
       const mesh = child as THREE.Mesh;
       if (mesh.isMesh) {
         mesh.castShadow = true;
         mesh.receiveShadow = true;
       }
     });
-  }, [scene]);
+  }, [clonedScene]);
+
   return (
-    <Bounds fit clip observe margin={1.2}>
+    <Bounds fit observe margin={1.2}>
       <Center>
-        <primitive object={scene} />
+        <primitive object={clonedScene} />
       </Center>
     </Bounds>
   );
@@ -67,7 +71,12 @@ class ModelErrorBoundary extends React.Component<ErrorBoundaryProps, { hasError:
 export function ProductViewer({ modelUrl, interactiveMode = "auto" }: ProductViewerProps) {
   const [autoRotate, setAutoRotate] = useState(true);
   const [isInteracting, setIsInteracting] = useState(interactiveMode === "auto");
+  const [canvasKey, setCanvasKey] = useState(0);
   const interactionTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    setIsInteracting(interactiveMode === "auto");
+  }, [interactiveMode]);
 
   const handleInteraction = useCallback(() => {
     if (!isInteracting || interactiveMode === "display") return;
@@ -121,10 +130,19 @@ export function ProductViewer({ modelUrl, interactiveMode = "auto" }: ProductVie
       <ModelErrorBoundary>
         <Suspense fallback={LoaderOverlay}>
           <Canvas 
+            key={canvasKey}
             shadows 
             camera={{ position: [0, 1.5, 4], fov: 45 }}
             onPointerDown={handleInteraction}
             onWheel={handleInteraction}
+            onCreated={({ gl }) => {
+              const canvas = gl.domElement;
+              const onLost = (event: Event) => {
+                event.preventDefault();
+                setCanvasKey((key) => key + 1);
+              };
+              canvas.addEventListener("webglcontextlost", onLost, { once: true });
+            }}
           >
             <ambientLight intensity={0.5} />
             <directionalLight position={[5, 10, 5]} intensity={1.2} castShadow shadow-mapSize={1024} />

@@ -47,26 +47,42 @@ export default function ProductDetailPage({ params }: PageProps) {
   const activeModelUrl = item.optimizedModelUrl || item.modelUrl || "";
 
   return (
-    <div className="relative min-h-screen bg-background selection:bg-accent/30 selection:text-foreground pb-24">
+    <div className="relative min-h-screen bg-background selection:bg-accent/30 selection:text-foreground pb-10">
       {/* Background Preload of GLB */}
       {activeModelUrl && (
         <link rel="preload" href={activeModelUrl} as="fetch" crossOrigin="anonymous" />
       )}
       
-      {/* Floating Back Button */}
-      <div className="fixed top-0 left-0 z-40 w-full p-4 sm:p-6 sm:pt-safe pt-safe pointer-events-none">
+      {/* Floating top bar: back + Explore in 3D */}
+      <div className="fixed top-0 left-0 z-40 flex w-full items-center justify-between p-4 sm:p-6 sm:pt-safe pt-safe pointer-events-none">
         <Link 
           href="/"
           className="flex h-10 w-10 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-md transition-transform active:scale-90 border border-white/10 shadow-sm pointer-events-auto"
         >
           <ArrowLeft className="h-5 w-5" />
         </Link>
+
+        {item.has3DModel && (
+          <Explore3DButton 
+            onClick={() => setIs3DOpen(true)} 
+            className="h-10 px-3.5 sm:px-4 py-0 bg-black/40 backdrop-blur-md border-white/20 pointer-events-auto"
+            disabled={!item.modelUrl}
+          />
+        )}
       </div>
 
       {/* Hero Visual */}
       <FadeIn className="relative w-full h-[55vh] sm:h-[60vh] max-h-[800px] bg-[#110e0c] rounded-b-[2.5rem] overflow-hidden shadow-2xl pointer-events-none">
         {item.has3DModel ? (
-          <LazyProductViewer modelUrl={activeModelUrl} interactiveMode="display" />
+          !is3DOpen ? (
+            <LazyProductViewer
+              key={activeModelUrl}
+              modelUrl={activeModelUrl}
+              interactiveMode="display"
+            />
+          ) : (
+            <div className="absolute inset-0 bg-[#110e0c]" />
+          )
         ) : (
           <Image
             src={item.image}
@@ -84,11 +100,11 @@ export default function ProductDetailPage({ params }: PageProps) {
 
       {/* Content Section */}
       <main className="relative z-10 max-w-4xl mx-auto px-6 sm:px-10 -mt-8">
-        <FadeIn delay={200} className="flex flex-col md:flex-row md:items-start gap-10">
+        <FadeIn delay={200} className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 md:gap-10">
           
           {/* Main Info Column */}
           <div className="flex-1">
-            <div className="flex flex-wrap gap-2 mb-4">
+            <div className="flex flex-wrap gap-2 mb-3">
               {item.featured && <Badge variant="warning">Signature</Badge>}
               {item.vegetarian && <Badge variant="success">Vegetarian</Badge>}
             </div>
@@ -97,29 +113,18 @@ export default function ProductDetailPage({ params }: PageProps) {
               {item.name}
             </h1>
 
-            <div className="mt-3 flex items-center gap-2">
+            <div className="mt-2 flex items-center gap-2">
               <span className="text-accent tracking-widest text-sm">★★★★★</span>
               <span className="text-muted-foreground/60 text-xs font-medium tracking-wider">4.8</span>
             </div>
 
-            <p className="mt-6 text-muted-foreground leading-relaxed text-base sm:text-lg font-light max-w-2xl">
+            <p className="mt-3 text-muted-foreground leading-relaxed text-base sm:text-lg font-light max-w-2xl">
               {item.description}
             </p>
           </div>
 
-          {/* Action Column */}
-          <div className="md:w-72 flex flex-col items-start md:items-end gap-6 shrink-0 mt-8 md:mt-0">
-            <div className="font-serif text-4xl sm:text-5xl text-accent drop-shadow-sm">
-              {item.currency}{item.price.toFixed(2)}
-            </div>
-
-            {item.has3DModel && (
-              <Explore3DButton 
-                onClick={() => setIs3DOpen(true)} 
-                className="w-full max-w-[280px]" 
-                disabled={!item.modelUrl}
-              />
-            )}
+          <div className="font-serif text-3xl sm:text-4xl md:text-5xl text-accent drop-shadow-sm md:text-right shrink-0">
+            {item.currency}{item.price.toFixed(2)}
           </div>
         </FadeIn>
       </main>

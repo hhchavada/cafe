@@ -92,15 +92,12 @@ export function Product3DOverlay({ isOpen, onClose, modelUrl }: Product3DOverlay
         </button>
       </div>
 
-      {/* 3D Canvas Container */}
-      <div 
-        className={cn(
-          "w-full h-full transition-transform duration-700 ease-[cubic-bezier(0.2,0.8,0.2,1)]",
-          animateIn ? "scale-100" : "scale-95"
-        )}
-      >
-        <LazyProductViewer modelUrl={modelUrl} />
-      </div>
+      {/* 3D Canvas — unmount immediately on close so the hero can reuse WebGL */}
+      {isOpen && (
+        <div className="w-full h-full">
+          <LazyProductViewer modelUrl={modelUrl} />
+        </div>
+      )}
 
 
     </div>
