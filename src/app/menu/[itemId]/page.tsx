@@ -3,7 +3,7 @@
 import { useCallback, useState, use } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, Leaf, Loader2 } from "lucide-react";
+import { ArrowLeft, ChevronRight, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { notFound } from "next/navigation";
 import dynamic from "next/dynamic";
@@ -12,6 +12,7 @@ import { Badge } from "../../../components/ui/Badge";
 import { Explore3DButton } from "../../../components/product/Explore3DButton";
 import { Product3DOverlay } from "../../../components/product/Product3DOverlay";
 import { NutritionDrawer } from "../../../components/product/NutritionDrawer";
+import { IngredientsDrawer } from "../../../components/product/IngredientsDrawer";
 import { FadeIn } from "../../../components/animations/FadeIn";
 import { useIsMobile } from "../../../hooks/useIsMobile";
 
@@ -41,10 +42,14 @@ export default function ProductDetailPage({ params }: PageProps) {
   const item = menuItems.find((m) => m.slug === resolvedParams.itemId);
   const [is3DOpen, setIs3DOpen] = useState(false);
   const [isNutritionOpen, setIsNutritionOpen] = useState(false);
+  const [isIngredientsOpen, setIsIngredientsOpen] = useState(false);
   const isMobile = useIsMobile();
   const router = useRouter();
 
   const nutritionHref = item?.nutrition ? `/menu/${item.slug}/nutrition` : undefined;
+  const ingredientsHref = item?.exploreImageUrl
+    ? `/menu/${item.slug}/ingredients`
+    : undefined;
 
   const openNutrition = useCallback(() => {
     if (!item?.nutrition || !nutritionHref) return;
@@ -54,6 +59,15 @@ export default function ProductDetailPage({ params }: PageProps) {
     }
     setIsNutritionOpen(true);
   }, [item, nutritionHref, isMobile, router]);
+
+  const openIngredients = useCallback(() => {
+    if (!item?.exploreImageUrl || !ingredientsHref) return;
+    if (isMobile) {
+      router.push(ingredientsHref);
+      return;
+    }
+    setIsIngredientsOpen(true);
+  }, [item, ingredientsHref, isMobile, router]);
 
   if (!item) {
     notFound();
@@ -111,22 +125,8 @@ export default function ProductDetailPage({ params }: PageProps) {
 
       <main className="relative z-10 max-w-4xl mx-auto px-6 sm:px-10 -mt-8">
         <FadeIn delay={200}>
-          <div className="flex items-center justify-between gap-3 mb-3">
-            <div className="flex flex-wrap gap-2 min-w-0">
-              {item.featured && <Badge variant="warning">Signature</Badge>}
-              {item.vegetarian && <Badge variant="success">Vegetarian</Badge>}
-            </div>
-
-            {item.nutrition && (
-              <button
-                type="button"
-                onClick={openNutrition}
-                className="shrink-0 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-2 text-[10px] sm:text-xs font-semibold tracking-[0.18em] uppercase text-foreground/90 transition-all hover:border-accent/40 hover:bg-accent/10 hover:text-accent active:scale-95"
-              >
-                <Leaf className="h-3.5 w-3.5 text-accent" />
-                Nutrition
-              </button>
-            )}
+          <div className="mb-3">
+            <Badge variant="success">Vegetarian</Badge>
           </div>
 
           <div className="flex items-start justify-between gap-4">
@@ -147,6 +147,29 @@ export default function ProductDetailPage({ params }: PageProps) {
             <span className="text-accent tracking-widest text-sm">★★★★★</span>
             <span className="text-muted-foreground/60 text-xs font-medium tracking-wider">4.8</span>
           </div>
+
+          <div className="mt-8 border-t border-white/10">
+            {item.exploreImageUrl && (
+              <button
+                type="button"
+                onClick={openIngredients}
+                className="flex w-full items-center justify-between py-4 text-left transition-colors hover:text-accent"
+              >
+                <span className="text-base text-foreground/90">Ingredients</span>
+                <ChevronRight className="h-5 w-5 text-muted-foreground" />
+              </button>
+            )}
+            {item.nutrition && (
+              <button
+                type="button"
+                onClick={openNutrition}
+                className="flex w-full items-center justify-between border-t border-white/10 py-4 text-left transition-colors hover:text-accent"
+              >
+                <span className="text-base text-foreground/90">Nutrition</span>
+                <ChevronRight className="h-5 w-5 text-muted-foreground" />
+              </button>
+            )}
+          </div>
         </FadeIn>
       </main>
 
@@ -154,6 +177,7 @@ export default function ProductDetailPage({ params }: PageProps) {
         isOpen={is3DOpen}
         onClose={() => setIs3DOpen(false)}
         modelUrl={item.optimizedModelUrl || item.modelUrl}
+        onIngredientsClick={item.exploreImageUrl ? openIngredients : undefined}
         onNutritionClick={item.nutrition ? openNutrition : undefined}
       />
 
@@ -162,6 +186,15 @@ export default function ProductDetailPage({ params }: PageProps) {
           isOpen={isNutritionOpen}
           onClose={() => setIsNutritionOpen(false)}
           nutrition={item.nutrition}
+          productName={item.name}
+        />
+      )}
+
+      {item.exploreImageUrl && (
+        <IngredientsDrawer
+          isOpen={isIngredientsOpen}
+          onClose={() => setIsIngredientsOpen(false)}
+          imageUrl={item.exploreImageUrl}
           productName={item.name}
         />
       )}

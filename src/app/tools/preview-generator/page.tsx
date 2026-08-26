@@ -60,7 +60,7 @@ export default function PreviewGenerator() {
   if (items.length === 0) return <div className="p-10 text-white">No models found</div>;
 
   return (
-    <div className="min-h-screen bg-[#171311] text-white p-8 flex flex-col items-center">
+    <div className="min-h-screen bg-[#060606] text-white p-8 flex flex-col items-center">
       <h1 className="text-2xl font-bold mb-2">3D Preview Generator</h1>
       <p className="text-white/60 mb-8 max-w-xl text-center">
         This tool renders the existing GLB models using the same lighting as the app, 
@@ -122,7 +122,7 @@ export default function PreviewGenerator() {
         </div>
 
         {/* Right Side: Canvas */}
-        <div className="w-2/3 aspect-square max-w-[800px] bg-[#171311] rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative">
+        <div className="w-2/3 aspect-square max-w-[800px] bg-[#060606] rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative">
           {/* Ensure gl preserves drawing buffer so toDataURL works */}
           <Canvas
             ref={canvasRef}

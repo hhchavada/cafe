@@ -17,7 +17,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  themeColor: "#171311", // Deep espresso
+  themeColor: "#060606", // Deep espresso
 };
 
 export const metadata: Metadata = {

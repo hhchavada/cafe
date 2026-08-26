@@ -34,6 +34,8 @@ export interface MenuItem {
   previewImageUrl?: string; // Static WebP preview of the 3D model
   iosModelUrl?: string; // URL to the USDZ model for iOS AR
   nutrition?: NutritionInfo;
+  /** Full-bleed ingredients/explore image under public/explore */
+  exploreImageUrl?: string;
   
   // AR positioning (optional)
   modelScale?: number;

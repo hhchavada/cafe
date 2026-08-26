@@ -22,13 +22,14 @@ export const menuItems: MenuItem[] = [
     shortDescription: "House-style burger, freshly prepared.",
     description: "House-style burger, freshly prepared and served with care.",
     image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&q=80&w=800",
-    vegetarian: false,
+    vegetarian: true,
     rating: 4.8,
     featured: true,
     has3DModel: true,
     modelUrl: "https://ellips.sfo3.cdn.digitaloceanspaces.com/media/burger-v1.glb",
     optimizedModelUrl: "/web-models/burger-v1.glb",
     previewImageUrl: "/3d-previews/burger.webp",
+    exploreImageUrl: "/explore/e_burger.png",
     nutrition: {
       calories: 520,
       protein: 28,
@@ -141,6 +142,7 @@ export const menuItems: MenuItem[] = [
     modelUrl: "https://ellips.sfo3.cdn.digitaloceanspaces.com/media/Crispy_Chili_Noodle-v1.glb",
     optimizedModelUrl: "/web-models/Crispy_Chili_Noodle-v1.glb",
     previewImageUrl: "/3d-previews/taiwanese-noodles.webp",
+    exploreImageUrl: "/explore/e_noodles.png",
     nutrition: {
       calories: 540,
       protein: 16,
@@ -169,6 +171,7 @@ export const menuItems: MenuItem[] = [
     modelUrl: "https://ellips.sfo3.cdn.digitaloceanspaces.com/media/Meshy_AI_Garden_Orzo_Delight_0813065557_texture-v1.glb",
     optimizedModelUrl: "/web-models/Meshy_AI_Garden_Orzo_Delight_0813065557_texture-v1.glb",
     previewImageUrl: "/3d-previews/white-sauce-pasta.webp",
+    exploreImageUrl: "/explore/e_gourmet_rice.png",
     nutrition: {
       calories: 610,
       protein: 18,

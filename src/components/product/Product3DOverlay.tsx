@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { ArrowLeft, Leaf, Loader2, Maximize, Minimize } from "lucide-react";
+import { ArrowLeft, Loader2, Maximize, Minimize } from "lucide-react";
 import { cn } from "../../lib/utils";
 
 const LazyProductViewer = dynamic(
@@ -27,6 +27,7 @@ interface Product3DOverlayProps {
   isOpen: boolean;
   onClose: () => void;
   modelUrl?: string;
+  onIngredientsClick?: () => void;
   onNutritionClick?: () => void;
 }
 
@@ -34,6 +35,7 @@ export function Product3DOverlay({
   isOpen,
   onClose,
   modelUrl,
+  onIngredientsClick,
   onNutritionClick,
 }: Product3DOverlayProps) {
   const [shouldRender, setShouldRender] = useState(false);
@@ -72,6 +74,8 @@ export function Product3DOverlay({
 
   if (!shouldRender || !modelUrl) return null;
 
+  const showBottomBar = Boolean(onIngredientsClick || onNutritionClick);
+
   return (
     <div
       className={cn(
@@ -105,16 +109,31 @@ export function Product3DOverlay({
         </div>
       )}
 
-      {onNutritionClick && (
+      {showBottomBar && (
         <div className="absolute bottom-0 left-0 right-0 z-20 flex justify-center p-4 sm:p-6 pb-safe pointer-events-none">
-          <button
-            type="button"
-            onClick={onNutritionClick}
-            className="pointer-events-auto inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/55 px-5 py-3 text-xs font-semibold tracking-[0.18em] uppercase text-white backdrop-blur-md transition-all hover:border-accent/50 hover:bg-black/70 active:scale-95 shadow-lg"
-          >
-            <Leaf className="h-3.5 w-3.5 text-accent" />
-            Nutrition
-          </button>
+          <div className="pointer-events-auto inline-flex items-center overflow-hidden rounded-full border border-white/15 bg-black/55 backdrop-blur-md shadow-lg">
+            {onIngredientsClick && (
+              <button
+                type="button"
+                onClick={onIngredientsClick}
+                className="px-5 py-3 text-xs font-semibold tracking-[0.18em] uppercase text-white transition-colors hover:bg-white/10 active:scale-[0.98]"
+              >
+                Ingredients
+              </button>
+            )}
+            {onIngredientsClick && onNutritionClick && (
+              <div className="h-5 w-px bg-white/20" />
+            )}
+            {onNutritionClick && (
+              <button
+                type="button"
+                onClick={onNutritionClick}
+                className="px-5 py-3 text-xs font-semibold tracking-[0.18em] uppercase text-white transition-colors hover:bg-white/10 active:scale-[0.98]"
+              >
+                Nutrition
+              </button>
+            )}
+          </div>
         </div>
       )}
     </div>

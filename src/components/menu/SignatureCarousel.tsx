@@ -73,7 +73,7 @@ export function SignatureCarousel({ items }: SignatureCarouselProps) {
               href={`/menu/${item.slug}`}
               className="group block relative w-full h-[380px] sm:h-[420px] rounded-2xl overflow-hidden bg-card border border-card-border shadow-lg transition-all duration-500 hover:shadow-2xl hover:-translate-y-1"
             >
-              <div className="relative w-full h-[65%] overflow-hidden bg-[#171311]">
+              <div className="relative w-full h-[65%] overflow-hidden bg-[#060606]">
                 <CardPreview item={item} />
               </div>
 
